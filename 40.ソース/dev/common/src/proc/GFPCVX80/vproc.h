@@ -1,0 +1,14 @@
+/**
+ * @brief vproc.h GFPCVX80
+ *
+ * @date 2025/03/06 êVãKçÏê¨ by HAS
+*/
+
+#ifndef _VPROC_H_
+#define _VPROC_H_
+
+#define VPROC T0000A00_10MAR26_GFPCVX80_1000
+
+void VPROC(void)  {return;}
+
+#endif

@@ -1,0 +1,974 @@
+?PAGE         "回線管理ファイル"
+?FUP          GFLINFUP!
+?SECTION      GFLIN
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GFLIN.
+   FILE IS "GFLIN" KEY-SEQUENCED.
+*   **********************************************
+*   *       GFLIN  (回線管理ファイル)            *
+*   **********************************************
+
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     SITE-ID                                   PIC X(01).
+     05     NW-ID                                     PIC X(01).
+     05     GRP-ID                                    PIC X(05).
+     05     IF-ID                                     PIC X(05).
+     05     STATION-ID                                PIC X(06).
+     05     CONNECT-ID                                PIC X(06).
+    03     ALT1-KEY-INFO.
+     05     SRV-CLS-ID.
+      07     SRV-CLS-KIND                             PIC X(08).
+      07     SRV-CLS-NUM                              PIC X(04).
+    03     ALT2-KEY-INFO.
+     05     LST-CONNECT-ID                            PIC X(06).
+    03     TCPIP-PRC-NAME                             PIC X(06).
+    03     IP-ADRESS-SRC                              PIC X(15).
+    03     PORT-NUM-SRC                               PIC X(05).
+    03     IP-ADRESS-DST                              PIC X(15).
+    03     PORT-NUM-DST                               PIC X(05).
+    03     INVALID-FLG                                PIC X(01).
+    03     UPDATE-DATE                                PIC X(08).
+    03     FUTURE-USE                                 PIC X(63).
+
+    KEY  IS  DB-GFLIN.PRI-KEY.
+    KEY  "A1"  IS  DB-GFLIN.ALT1-KEY-INFO.
+    KEY  "A2"  IS  DB-GFLIN.ALT2-KEY-INFO.
+
+    END
+
+
+
+?PAGE         "回線ステータスファイル"
+?FUP          GCLSTFUP!
+?SECTION      GCLST
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GCLST.
+   FILE IS "GCLST" KEY-SEQUENCED AUDIT.
+*   **********************************************
+*   *       GCLST  (回線ステータスファイル)      *
+*   **********************************************
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     SITE-ID                                   PIC X(01).
+     05     NW-ID                                     PIC X(01).
+     05     GRP-ID                                    PIC X(05).
+     05     IF-ID                                     PIC X(05).
+     05     STATION-ID                                PIC X(06).
+     05     CONNECT-ID                                PIC X(06).
+    03     CONNECT-STS-INFO.
+     05     CONNECT-STS                               PIC X(02).
+     05     CONNECT-STS-UPDATE-TIME                   PIC X(20).
+    03     PRC-STS-INFO.
+     05     PRC-STS                                   PIC X(02).
+     05     PRC-STS-UPDATE-TIME                       PIC X(14).
+    03     CONNECT-INFO.
+     05     IP-ADRESS-SRC                             PIC X(15).
+     05     PORT-NUM-SRC                              PIC X(05).
+     05     IP-ADRESS-DST                             PIC X(15).
+     05     PORT-NUM-DST                              PIC X(05).
+     05     ERR-CODE                                  PIC X(04).
+     05     DISCONNECT-RSN                            PIC X(02).
+    03     FUTURE-USE                                 PIC X(56).
+
+    KEY  IS  DB-GCLST.PRI-KEY.
+
+    END
+
+
+
+?PAGE         "局状態管理ファイル"
+?FUP          GCSSTFUP!
+?SECTION      GCSST
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GCSST.
+   FILE IS "GCSST" KEY-SEQUENCED AUDIT.
+*   **********************************************
+*   *       GCSST  (局状態管理ファイル)          *
+*   **********************************************
+
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     SITE-ID                                   PIC X(01).
+     05     NW-ID                                     PIC X(01).
+     05     GRP-ID                                    PIC X(05).
+     05     IF-ID                                     PIC X(05).
+     05     STATION-ID                                PIC X(06).
+     05     CONNECT-ID                                PIC X(06).
+    03     NW-ID-INFO.
+     05     NW-IF                                     PIC X(20).
+     05     NW-STATION                                PIC X(11).
+     05     FUTURE-USE                                PIC X(39).
+    03     STATE-STS-INFO.
+     05     STATE-STS                                 PIC X(02).
+     05     STATE-STS-UPDATE-TIME                     PIC X(14).
+     05     OPEN-STATE-RETRY-NUM                      PIC 9(08).
+     05     FUTURE-USE                                PIC X(24).
+    03     FUTURE-USE                                 PIC X(58).
+    
+    KEY  IS  DB-GCSST.PRI-KEY.
+    KEY  "A1"  IS  DB-GCSST.NW-ID-INFO.NW-IF.
+    KEY  "A2"  IS  DB-GCSST.NW-ID-INFO.NW-STATION.
+
+    END
+
+
+
+?PAGE         "エコー状態管理ファイル"
+?FUP          GCESTFUP!
+?SECTION      GCEST
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GCEST.
+   FILE IS "GCEST" KEY-SEQUENCED AUDIT.
+*   ************************************************************
+*   *       GCEST  (エコー状態管理ファイル) 　　　　　　　     *
+*   ************************************************************
+
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     SITE-ID                                   PIC X(01).
+     05     NW-ID                                     PIC X(01).
+     05     GRP-ID                                    PIC X(05).
+     05     IF-ID                                     PIC X(05).
+     05     STATION-ID                                PIC X(06).
+     05     CONNECT-ID                                PIC X(06).
+    03     ECHO-INFO.
+     05     CBS-ECHO-INFO.
+      07     LAST-ECHO-START-TIME                     PIC X(14).
+      07     LAST-ECHO-END-TIME                       PIC X(14).
+      07     LAST-ECHO-RESULT                         PIC X(02).
+      07     LAST-ECHO-OK-TIME                        PIC X(14).
+     05     DST-ECHO-INFO.
+      07     LAST-ECHO-REQ-RECV-TIME                  PIC X(14).
+      07     LAST-ECHO-RESULT                         PIC X(02).
+      07     LAST-ECHO-OK-TIME                        PIC X(14).
+    03     FUTURE-USE                                 PIC X(42).
+
+    KEY  IS  DB-GCEST.PRI-KEY.
+    
+    END
+
+
+
+?PAGE         "カット対象日付管理ファイル"
+?FUP          GCCUTFUP!
+?SECTION      GCCUT
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GCCUT.
+   FILE IS "GCCUT" KEY-SEQUENCED AUDIT.
+*   ***************************************************************
+*   *       GCCUT  (カット対象日付管理ファイル)　　　　　　       *
+*   ***************************************************************
+
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     SITE-ID                                   PIC X(01).
+     05     NW-ID                                     PIC X(01).
+     05     GRP-ID                                    PIC X(05).
+     05     IF-ID                                     PIC X(05).
+     05     STATION-ID                                PIC X(06).
+     05     CONNECT-ID                                PIC X(06).
+    03     NW-IDV-INFO.
+     05     BH-MCH-KEY                                PIC X(20).
+     05     FUTURE-USE                                PIC X(25).
+    03     CUT-DATE-INFO.
+     05     CUT-DATE                                  PIC X(08).
+     05     CUT-UPDATE-TIME                           PIC X(14).
+     05     LAST-CUT-DATE                             PIC X(08).
+     05     LAST-CUT-UPDATE-TIME                      PIC X(14).
+     05     FUTURE-USE                                PIC X(20).
+    03     FUTURE-USE                                 PIC X(39).
+
+    KEY  IS  DB-GCCUT.PRI-KEY.
+    KEY  "A1"  IS  DB-GCCUT.NW-IDV-INFO.BH-MCH-KEY.
+
+    END
+
+
+
+?PAGE         "N/W通信ログ"
+?FUP          GLNLGFUP!
+?SECTION      GLNLG
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GLNLG.
+   FILE IS "GLNLG" KEY-SEQUENCED  AUDIT BLOCK 32768.
+*   **********************************************
+*   *       GLNLG  (N/W通信ログ)　　　           *
+*   **********************************************
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     PART-ID                                   PIC X(02).
+     05     TUSHIN-DENBUN-ID.
+      07     TIME-STAMP                               PIC X(20).
+      07     TIME-STAMP-BRANCH                        PIC X(16).
+    03     SEND-RECV-ID                               PIC X(01).
+    03     SEND-RECV-DENBUN-LEN                       PIC X(05).
+    03     MTI-ID                                     PIC X(04).
+    03     MSG-SHUBETU                                PIC X(02).
+    03     CONNECT-ID.
+     05     SITE-ID                                   PIC X(01).
+     05     NW-ID                                     PIC X(01).
+     05     GRP-ID                                    PIC X(05).
+     05     IF-ID                                     PIC X(05).
+     05     STATION-ID                                PIC X(06).
+     05     CONNECT-ID                                PIC X(06).
+    03     FURIWAKE-INFO.
+     05     FURIWAKE-DST                              PIC X(01).
+     05     FURIWAKE-KUBUN                            PIC X(02).
+     05     FUTURE-USE                                PIC X(07).
+    03     FUTURE-USE                                 PIC X(26).
+    03     DENBUN-SEND-RECV-INFO.
+     05     DENBUN-RECV-TIME                          PIC 9(20).
+     05     RECV-KYOKU-STS                            PIC X(01).
+     05     NW-KUBUN                                  PIC X(02).
+     05     MTI-ID                                    PIC X(04).
+     05     SEND-DENBUN-SHUBETU                       PIC X(01).
+     05     DENBUN-LOG-KEY.
+      07     TRAN-ID.
+       09     GFP-LCN-ID                              PIC X(15).
+       09     DENBUN-KEITAI                           PIC X(01).
+      07     DENBUN-SHUBETU                           PIC X(01).
+      07     RE-SEND-NUM                              PIC 9(03).
+     05     DENBUN-FMT-KUBUN                          PIC X(01).
+     05     TUSHIN-LOG-SAVE-FILENAME                  PIC X(36).
+     05     TUSHIN-LOG-KEY.
+      07     PART-ID                                  PIC X(02).
+      07     TIME-STAMP                               PIC 9(20).
+      07     TUSHIN-UNIQUE-INFO                       PIC X(16).
+     05     FUTURE-USE                                PIC X(37).
+    03     TUSHIN-CNTRL-INFO.
+     05     IF-ID                                     PIC X(20).
+     05     STATION-ID                                PIC X(11).
+     05     LINE-INFO.
+      07     RECV-CONNECT-ID                          PIC X(24).
+      07     RECV-CONNECT-INFO.
+       09     IP-ADRESS-SRC                           PIC X(15).
+       09     PORT-NUM-SRC                            PIC 9(05).
+       09     IP-ADRESS-DST                           PIC X(15).
+       09     PORT-NUM-DST                            PIC 9(05).
+      07     DENBUN-RECV-TIME-STAMP.
+       09     TIME-STAMP                              PIC 9(20).
+       09     TUSHIN-UNIQUE-INFO                      PIC X(16).
+     05     FUTURE-USE                                PIC X(70).
+    03     DENBUN-AREA.
+     05     DENBUN-LEN                                PIC 9(05).
+     05     MTI-START-LCT                             PIC 9(05).
+     05     DENBUN                                    PIC X(9999).
+
+    KEY  IS  DB-GLNLG.PRI-KEY.
+    KEY  "A1"  IS  DB-GLNLG.DENBUN-SEND-RECV-INFO.DENBUN-LOG-KEY DUPLICATES NOT ALLOWED.
+
+    END
+
+
+
+?PAGE         "エラー出力ログ"
+?FUP          GLELGFUP!
+?SECTION      GLELG
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GLELG.
+   FILE IS "GLELG" KEY-SEQUENCED BLOCK 32768.
+*   **********************************************
+*   *       GLELG  (エラー出力ログ)　            *
+*   **********************************************
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     PART-ID                                   PIC X(02).
+     05     TIME-STAMP                                PIC X(20).
+     05     TIME-STAMP-BRANCH                         PIC X(16).
+    03     ERR-DENBUN-ID                              PIC X(01).
+    03     MTI-ID                                     PIC X(04).
+    03     RES-CODE                                   PIC X(06).
+    03     NAIBU-ERR-CODE                             PIC X(07).
+    03     SRV-CLS-INFO.
+     05     SRV-CLS-ID                                PIC X(12).
+     05     SRV-CLS-MLT-NUM                           PIC X(04).
+    03     FUTURE-USE                                 PIC X(28).
+    03     DENBUN-SEND-RECV-INFO.
+     05     DENBUN-RECV-TIME                          PIC 9(20).
+     05     RECV-KYOKU-STS                            PIC X(01).
+     05     NW-KUBUN                                  PIC X(02).
+     05     MTI-ID                                    PIC X(04).
+     05     SEND-DENBUN-SHUBETU                       PIC X(01).
+     05     DENBUN-LOG-KEY.
+      07     TRAN-ID.
+       09     LCN-ID                                  PIC X(15).
+       09     DENBUN-KEITAI                           PIC X(01).
+      07     DENBUN-SHUBETU                           PIC X(01).
+      07     RE-SEND-NUM                              PIC 9(03).
+     05     DENBUN-FMT-KUBUN                          PIC X(01).
+     05     TUSHIN-LOG-SAVE-FILENAME                  PIC X(36).
+     05     TUSHIN-LOG-KEY.
+      07     PART-ID                                  PIC X(02).
+      07     TIME-STAMP                               PIC 9(20).
+      07     TUSHIN-UNIQUE-INFO                       PIC X(16).
+     05     FUTURE-USE                                PIC X(37).
+    03     TUSHIN-CNTRL-INFO.
+     05     IF-ID                                     PIC X(20).
+     05     STATION-ID                                PIC X(11).
+     05     LINE-INFO.
+      07     RECV-CONNECT-ID                          PIC X(24).
+      07     RECV-CONNECT-INFO.
+       09     IP-ADRESS-SRC                           PIC X(15).
+       09     PORT-NUM-SRC                            PIC 9(05).
+       09     IP-ADRESS-DST                           PIC X(15).
+       09     PORT-NUM-DST                            PIC 9(05).
+      07     DENBUN-RECV-TIME-STAMP.
+       09     TIME-STAMP                              PIC 9(20).
+       09     TUSHIN-UNIQUE-INFO                      PIC X(16).
+     05     FUTURE-USE                                PIC X(70).
+    03     DENBUN-AREA.
+     05     DENBUN-LEN                                PIC 9(05).
+     05     MTI-START-LCT                             PIC 9(05).
+     05     DENBUN                                    PIC X(10400).
+
+    KEY  IS  DB-GLELG.PRI-KEY.
+    KEY  "A1"  IS  DB-GLELG.DENBUN-SEND-RECV-INFO.DENBUN-LOG-KEY.
+
+    END
+
+
+
+?PAGE         "制御電文ログ"
+?FUP          GLMLGFUP!
+?SECTION      GLMLG
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GLMLG.
+   FILE IS "GLMLG" KEY-SEQUENCED AUDIT BLOCK 32768.
+*   **********************************************
+*   *       GLMLG  (制御電文ログ)　　            *
+*   **********************************************
+
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     PART-ID                                   PIC X(02).
+     05     LCN-ID                                    PIC X(15).
+     05     S-H-KUBUN                                 PIC X(01).
+     05     SEND-RECV-ID                              PIC X(01).
+    03     CONNECT-ID.
+     05     SITE-ID                                   PIC X(01).
+     05     NW-ID                                     PIC X(01).
+     05     GRP-ID                                    PIC X(05).
+     05     IF-ID                                     PIC X(05).
+     05     STATION-ID                                PIC X(06).
+     05     CONNECT-ID                                PIC X(06).
+    03     MTI-ID                                     PIC X(04).
+    03     NAIBU-ERR-CODE                             PIC X(07).
+    03     CNTRL-DENBUN-SRV-CLS-INFO.
+     05     SRV-CLS-ID                                PIC X(12).
+     05     SRV-CLS-MLT-NUM                           PIC X(04).
+    03     CONTROL-KIND                               PIC X(04).
+    03     SEND-NAIBU-ERR-CODE                        PIC X(07).
+    03     ENTRY-TIMESTAMP                            PIC X(20).
+    03     PROC_RESULT_INFO.
+     05     KEY_TYPE                                  PIC X(04).
+     05     FUTURE_USE                                PIC X(16).
+    03     FUTURE-USE                                 PIC X(78).
+    03     DENBUN-INFO-EXIST                          PIC X(01).
+    03     DENBUN-AREA.
+     05     DENBUN-LEN                                PIC 9(05).
+     05     DENBUN                                    PIC X(9999).
+
+    KEY  IS  DB-GLMLG.PRI-KEY.
+    KEY  "A1"  IS  DB-GLMLG.ENTRY-TIMESTAMP.
+
+    END
+
+
+
+?PAGE         "制御電文管理ファイル"
+?FUP          GFMTLFUP!
+?SECTION      GFMTL
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GFMTL.
+   FILE IS "GFMTL" KEY-SEQUENCED AUDIT.
+*   **********************************************
+*   *       GFMTL  (制御電文管理ファイル)        *
+*   **********************************************
+
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     PART-ID                                   PIC X(02).
+     05     LCN-ID                                    PIC X(15).
+    03     S-H-KUBUN                                  PIC X(01).
+    03     TORIHIKI-STS                               PIC X(02).
+    03     TORIHIKI-INFO.
+     05     SITE-ID                                   PIC X(01).
+     05     NW-ID                                     PIC X(01).
+     05     GRP-ID                                    PIC X(05).
+     05     IF-ID                                     PIC X(05).
+     05     STATION-ID                                PIC X(06).
+     05     CONNECT-ID                                PIC X(06).
+    03     NAIBU-ERR-ID                               PIC X(07).
+    03     RES-CODE                                   PIC X(04).
+    03     REQ-RES-MATCH-KEY                          PIC X(50).
+    03     TIMER-INFO-KEY                             PIC X(20).
+    03     CONTROL-KIND                               PIC X(04).
+    03     ENTRY-TIMESTAMP                            PIC X(20).
+    03     TIMER-ENTRY-KBN                            PIC X(01).
+    03     FUTURE-USE                                 PIC X(56).
+
+    KEY  IS  DB-GFMTL.PRI-KEY.
+    KEY  "A1"  IS  DB-GFMTL.REQ-RES-MATCH-KEY.
+    KEY  "A2"  IS  DB-GFMTL.TIMER-INFO-KEY.
+    KEY  "A3"  IS  DB-GFMTL.ENTRY-TIMESTAMP.
+
+    END
+
+
+
+?PAGE         "鍵管理ファイル"
+?FUP          GCKEYFUP!
+?SECTION      GCKEY
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GCKEY.
+   FILE IS "GCKEY" KEY-SEQUENCED AUDIT.
+*   **********************************************
+*   *       GCKEY  (鍵管理ファイル)              *
+*   **********************************************
+
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     SITE-ID                                   PIC X(01).
+     05     NW-ID                                     PIC X(01).
+     05     GRP-ID                                    PIC X(05).
+     05     IF-ID                                     PIC X(05).
+     05     STATION-ID                                PIC X(06).
+     05     KEY-TYPE                                  PIC X(04).
+    03     NW-IDV-INFO.
+     05     BH-MCH-KEY.
+      07     BH-MCH-NAME                              PIC X(20).
+      07     KEY-TYPE                                 PIC X(04).
+     05     FUTURE-USE                                PIC X(23).
+    03     KEY-EXCHANGE-TYPE                          PIC X(02).
+    03     KEY-INFO.
+     05     KEY-USE-ALG                               PIC X(03).
+     05     KEY-FORMAT                                PIC X(02).
+     05     EXPORTABILITY                             PIC X(01).
+     05     RECV-KEY-INFO.
+      07     KEY-VALUE                                PIC X(74).
+      07     CHECK-DIGIT                              PIC X(16).
+      07     KEY-UPDATE-TIME                          PIC X(14).
+      07     FUTURE-USE                               PIC X(26).
+     05     SEND-KEY-INFO.
+      07     KEY-VALUE                                PIC X(74).
+      07     CHECK-DIGIT                              PIC X(16).
+      07     KEY-UPDATE-TIME                          PIC X(14).
+      07     FUTURE-USE                               PIC X(26).
+     05     NEW-KEY-INDEX                             PIC 9(02).
+     05     KEY-INFO-01.
+      07     KEY-VALUE                                PIC X(74).
+      07     CHECK-DIGIT                              PIC X(16).
+      07     KEY-UPDATE-TIME                          PIC X(14).
+      07     FUTURE-USE                               PIC X(26).
+     05     KEY-INFO-02.
+      07     KEY-VALUE                                PIC X(74).
+      07     CHECK-DIGIT                              PIC X(16).
+      07     KEY-UPDATE-TIME                          PIC X(14).
+      07     FUTURE-USE                               PIC X(26).
+    03     FUTURE-USE                                 PIC X(105).
+
+    KEY  IS  DB-GCKEY.PRI-KEY.
+    KEY  "A1"  IS  DB-GCKEY.NW-IDV-INFO.BH-MCH-KEY.
+
+    END
+
+
+
+?PAGE         "東阪振分比率設定ファイル"
+?FUP          GFNSWFUP!
+?SECTION      GFNSW
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GFNSW.
+   FILE IS "GFNSW" KEY-SEQUENCED.
+*   **********************************************
+*   *       GFNSW  (東阪振分比率設定ファイル)    *
+*   **********************************************
+
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     SITE-ID                                   PIC X(01).
+     05     NW-ID                                     PIC X(01).
+     05     GRP-ID                                    PIC X(05).
+    03     FURIWAKE-RATE-TKY                          PIC 9(03).
+    03     FURIWAKE-RATE-OSK                          PIC 9(03).
+    03     FUTURE-USE                                 PIC X(37).
+
+    KEY  IS  DB-GFNSW.PRI-KEY.
+
+    END
+
+
+
+?PAGE         "受信電文振分先設定ファイル"
+?FUP          GFQSWFUP!
+?SECTION      GFQSW
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GFQSW.
+   FILE IS "GFQSW" KEY-SEQUENCED.
+*   **********************************************
+*   *       GFQSW  (受信電文振分先設定ファイル)  *
+*   **********************************************
+
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     SITE-ID                                   PIC X(01).
+     05     NW-ID                                     PIC X(01).
+     05     GRP-ID                                    PIC X(05).
+     05     MTI-ID                                    PIC X(04).
+    03     FURIWAKE-CNTRL-INFO.
+     05     TKY-OSK-KUBUN                             PIC X(01).
+     05     DENBUN-SHUBETU                            PIC X(01).
+     05     FUTURE-USE                                PIC X(08).
+    03     RECV-QFILE-INFO.
+     05     TKY-SITE-INFO.
+      07     SRV-CLS-ID.
+       09     SRV-CLS-KIND                            PIC X(08).
+       09     SRV-CLS-NUM                             PIC X(04).
+      07     FILE-ID.
+       09     FILE-KIND                               PIC X(08).
+       09     FILE-NUM                                PIC X(04).
+      07     FUTURE-USE                               PIC X(16).
+     05     OSK-SITE-INFO.
+      07     SRV-CLS-ID.
+       09     SRV-CLS-KIND                            PIC X(08).
+       09     SRV-CLS-NUM                             PIC X(04).
+      07     FILE-ID.
+       09     FILE-KIND                               PIC X(08).
+       09     FILE-NUM                                PIC X(04).
+      07     FUTURE-USE                               PIC X(16).
+     05     FUTURE-USE                                PIC X(20).
+    03     FUTURE-USE                                 PIC X(79).
+
+    KEY  IS  DB-GFQSW.PRI-KEY.
+
+    END
+
+
+
+?PAGE         "N/W情報ファイル"
+?FUP          GFNWIFUP!
+?SECTION      GFNWI
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GFNWI.
+   FILE IS "GFNWI" KEY-SEQUENCED.
+*   **********************************************
+*   *       GFNWI  (N/W情報ファイル)             *
+*   **********************************************
+
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     SITE-ID                                   PIC X(01).
+     05     NW-ID                                     PIC X(01).
+     05     GRP-ID                                    PIC X(05).
+     05     IF-ID                                     PIC X(05).
+     05     STATION-ID                                PIC X(06).
+    03     NW-ID-INFO.
+     05     NW-KUBUN                                  PIC X(02).
+     05     NW-IF                                     PIC X(20).
+     05     NW-STATION                                PIC X(11).
+     05     FUTURE-USE                                PIC X(29).
+    03     MNG-LYR-INFO.
+     05     OPEN-CLOSE-MNG-LYR                        PIC X(01).
+     05     ECHO-TEST-MNG-LYR                         PIC X(01).
+     05     KEY-CNG-MNG-LYR                           PIC X(01).
+     05     CUT-OVER-MNG-LYR                          PIC X(01).
+     05     SAF-SEND-MNG-LYR                          PIC X(01).
+     05     FILLER1                                   PIC X(01).
+     05     CONNECT-NUM-MNG-LYR                       PIC X(01).
+     05     FUTURE-USE                                PIC X(13).
+    03     DENBUN-ITEM-LCT-INFO.
+     05     DATA-LEN-START-LCT                        PIC X(05).
+     05     DATA-LEN-SIZE                             PIC X(02).
+     05     DATA-LEN-ATTRIBUTE                        PIC X(03).
+     05     DATA-LEN-INCLUDE-ID                       PIC X(01).
+     05     DENBUN-START-LCT                          PIC X(05).
+     05     MTI-START-LCT                             PIC X(05).
+     05     MTI-ITEM-LEN                              PIC X(02).
+     05     MTI-ITEM-ATTRIBUTE                        PIC X(03).
+     05     TEXT-FORMAT-VERSION                       PIC X(01).
+     05     FUTURE-USE                                PIC X(23).
+    03     CONNECT-NXT-PRC-INFO.
+     05     CONNECT-NXT-PRC-KIND                      PIC X(02).
+     05     SPC-DATA                                  PIC X(100).
+     05     FUTURE-USE                                PIC X(48).
+    03     CONNECT-NUM-MNG-INFO.
+     05     CONNECT-NUM-MNG-KIND                      PIC X(01).
+     05     FUTURE-USE                                PIC X(09).
+    03     SHORI-KBN-INFO.
+     05     SEND-RE-SELECT-NEED                       PIC X(01).
+     05     SYOGAI-TUUCHI-NEED                        PIC X(01).
+     05     ADMIN-DENBUN-RES-NEED                     PIC X(01).
+     05     TRIGGER-OPEN-NEED                         PIC X(01).
+     05     FUTURE-USE                                PIC X(06).
+    03     ENV-SET-INFO.
+     05     ACT-STB-ID                                PIC X(01).
+     05     FUTURE-USE                                PIC X(09).
+    03     TRANS-CNTRL-TMR-INFO.
+     05     CONNECT-WAIT-TMR                          PIC 9(08).
+     05     SEND-WAIT-TMR                             PIC 9(08).
+     05     NXT-DATA-RECV-WAIT                        PIC 9(08).
+     05     NON-COMM-MONITOR                          PIC 9(08).
+     05     LINE-FAIL-RTR-NUM-SRT                     PIC 9(08).
+     05     LINE-FAIL-RTR-NUM-LNG                     PIC 9(08).
+     05     LINE-FAIL-RTR-NUM-LST                     PIC 9(08).
+     05     TMR-08                                    PIC 9(08).
+     05     TMR-09                                    PIC 9(08).
+     05     TMR-10                                    PIC 9(08).
+    03     TRANS-CNTRL-CNT-INFO.
+     05     LINE-FAIL-RTR-NUM-SRT                     PIC 9(08).
+     05     LINE-FAIL-RTR-NUM-LNG                     PIC 9(08).
+     05     LINE-FAIL-RTR-NUM-LST                     PIC 9(08).
+     05     CNT-04                                    PIC 9(08).
+     05     CNT-05                                    PIC 9(08).
+    03     CNTRL-DENBUN-TMR-INFO.
+     05     OPEN-RES-WAIT-TMR                         PIC 9(08).
+     05     CLOSE-RES-WAIT-TMR                        PIC 9(08).
+     05     ECHO-TEST-RES-WAIT-TMR                    PIC 9(08).
+     05     KEY-CNG-REQ-WAIT-TMR                      PIC 9(08).
+     05     KEY-CNG-RES-WAIT-TMR                      PIC 9(08).
+     05     CUT-OVER-RES-WAIT-TMR                     PIC 9(08).
+     05     SAF-START-END-RES-TMR                     PIC 9(08).
+     05     TMR-08                                    PIC 9(08).
+     05     TMR-09                                    PIC 9(08).
+     05     TMR-10                                    PIC 9(08).
+    03     CNTRL-DENBUN-CNT-INFO.
+     05     OPEN-RETRY-NUM                            PIC 9(08).
+     05     CNT-02                                    PIC 9(08).
+     05     CNT-03                                    PIC 9(08).
+     05     CNT-04                                    PIC 9(08).
+     05     CNT-05                                    PIC 9(08).
+    03     GFNWS-INFO.
+     05     REC-UNIT                                  PIC X(4).
+     05     FUTURE-USE                                PIC X(6).
+    03     DST-UNQ-INFO                               PIC X(100).
+    03     FUTURE-USE                                 PIC X(120).
+
+    KEY  IS  DB-GFNWI.PRI-KEY.
+    KEY  "A1"  IS  DB-GFNWI.NW-ID-INFO.NW-IF.
+    KEY  "A2"  IS  DB-GFNWI.NW-ID-INFO.NW-STATION.
+
+    END
+
+
+
+?PAGE         "接続先固有情報ファイル"
+?SECTION      GFNWS
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GFNWS.
+   FILE IS "GFNWS" KEY-SEQUENCED.
+*   **********************************************
+*   *       GFNWS  (接続先固有情報ファイル)      *
+*   **********************************************
+
+?FUP          GFNWSFUP!
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     NW-ID                                     PIC X(01).
+     05     IF-ID                                     PIC X(05).
+     05     STATION-ID                                PIC X(06).
+     05     CONNECT-ID                                PIC X(06).
+    03     DST-UNQ-INFO                               PIC X(200).
+    03     FUTURE-USE                                 PIC X(82).
+
+    KEY  IS  DB-GFNWS.PRI-KEY.
+
+    END
+
+
+
+?PAGE         "物理名情報ファイル"
+?FUP          GFPHIFUP!
+?SECTION      GFPHI
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GFPHI.
+   FILE IS "GFPHI" KEY-SEQUENCED.
+*   **********************************************
+*   *       GFPHI  (物理名情報ファイル)             *
+*   **********************************************
+
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     SITE-ID                                   PIC X(01).
+     05     NW-ID                                     PIC X(01).
+     05     GRP-ID                                    PIC X(05).
+     05     SRV-CLS-KEY.
+      07     SRV-CLS-ID.
+       09     SRV-CLS-KIND                            PIC X(08).
+       09     SRV-CLS-NUM                             PIC X(04).
+      07     SRV-CLS-MLT-NUM                          PIC X(04).
+     05     PRC-FILE-KEY.
+      07     PRC-FILE-ID.
+       09     PRC-FILE-KIND                           PIC X(08).
+       09     PRC-FILE-NUM                            PIC X(04).
+      07     PRC-FILE-MLT-NUM                         PIC X(04).
+    03     SRV-CLS-INFO.
+     05     DOMAIN-NAME                               PIC X(08).
+     05     PATHMON-NAME                              PIC X(16).
+     05     SRV-CLS-NAME                              PIC X(16).
+    03     PRC-FILE-INFO.
+     05     PRC-FILE-NAME                             PIC X(48).
+    03     INVALID-FLG                                PIC X(01).
+    03     UPDATE-DATE                                PIC X(08).
+    03     LCN-NUM-SCOPE.
+     05     LCN-NUM-MIN                               PIC X(04).
+     05     LCN-NUM-MAX                               PIC X(04).
+    03     FUTURE-USE                                 PIC X(96).
+
+    KEY  IS  DB-GFPHI.PRI-KEY.
+    KEY  "A1"  IS  DB-GFPHI.SRV-CLS-INFO.DOMAIN-NAME.
+    KEY  "A2"  IS  DB-GFPHI.PRC-FILE-INFO.PRC-FILE-NAME.
+
+    END
+
+
+
+?PAGE         "SAF送信状態管理ファイル"
+?FUP          GCSAFFUP!
+?SECTION      GCSAF
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GCSAF.
+   FILE IS "GCSAF" KEY-SEQUENCED AUDIT.
+*   ***********************************************
+*   *       GCSAF  (SAF送信状態管理ファイル)      *
+*   ***********************************************
+
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     SITE-ID                                   PIC X(01).
+     05     NW-ID                                     PIC X(01).
+     05     GRP-ID                                    PIC X(05).
+     05     IF-ID                                     PIC X(05).
+     05     STATION-ID                                PIC X(06).
+     05     CONNECT-ID                                PIC X(06).
+    03     NW-IND-INFO.
+     05     CENTER-ID                                 PIC X(11).
+     05     FUTURE-USE                                PIC X(29).
+    03     SAF-SEND-STS-INFO.
+     05     SAF-SEND-STS                              PIC X(02).
+     05     SAF-SEND-UPDATE-TIME                      PIC X(14).
+     05     FUTURE-USE                                PIC X(18).
+    03     FUTURE-USE                                 PIC X(52).
+
+    KEY  IS  DB-GCSAF.PRI-KEY.
+    KEY  "A1"  IS  DB-GCSAF.NW-IND-INFO.CENTER-ID.
+
+    END
+
+
+
+?PAGE         "受信コネクション数管理ファイル"
+?FUP          GCSCNFUP!
+?SECTION      GCSCN
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GCSCN.
+   FILE IS "GCSCN" KEY-SEQUENCED AUDIT.
+*   ***********************************************
+*   *   GCSCN  (受信コネクション数管理ファイル)   *
+*   ***********************************************
+
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     SITE-ID                                   PIC X(01).
+     05     NW-ID                                     PIC X(01).
+     05     GRP-ID                                    PIC X(05).
+     05     IF-ID                                     PIC X(05).
+     05     STATION-ID                                PIC X(06).
+    03     CONNECT-NUM-CTRL-INFO.
+     05     MAX-CONNECT-NUM                           PIC X(04).
+     05     CRT-CONNECT-NUM                           PIC X(04).
+     05     RE-CONNECT-STS                            PIC X(02).
+     05     RE-CONNECT-START-TIME                     PIC X(20).
+     05     RE-CONNECT-SVR-CLS-ID                     PIC X(12).
+     05     FUTURE-USE                                PIC X(10).
+    03     FUTURE-USE                                 PIC X(58).
+
+    KEY  IS  DB-GCSCN.PRI-KEY.
+
+    END
+
+
+
+?PAGE         "制御電文エレメント情報ファイル"
+?FUP          GFELIFUP!
+?SECTION      GFELI
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GFELI.
+   FILE IS "GFELI" KEY-SEQUENCED.
+*   *********************************************************************
+*   *       GFELI  (制御電文エレメント情報ファイル)                     *
+*   *********************************************************************
+
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     NW-ID                                     PIC X(01).
+     05     IPC-ID                                    PIC X(01).
+     05     MTI-ID                                    PIC X(04).
+     05     BIT-ID                                    PIC 9(03).
+     05     FILLER                                    PIC X(01).
+    03     MSG-FMT-INFO.
+     05     DATA-LEN-TYPE                             PIC X(01).
+     05     DATA-LEN-SIZE                             PIC 9(01).
+     05     DATA-LEN-ATTRIBUTE                        PIC X(01).
+     05     DATA-AREA-ATTRIBUTE                       PIC X(01).
+     05     DATA-MAX-LEN                              PIC 9(05).
+     05     FUTURE-USE                                PIC X(31).
+    03     FIX-FMT-INFO.
+     05     TBL-START-OFFSET                          PIC 9(05).
+     05     DATA-AREA-SIZE                            PIC 9(05).
+     05     CODE-CHANGE-NEED                          PIC 9(01).
+     05     FUTURE-USE                                PIC X(29).
+
+    KEY  IS  DB-GFELI.PRI-KEY.
+
+    END
+
+
+
+?PAGE         "送信電文折返し振分先設定ファイル"
+?FUP          GFQBKFUP!
+?SECTION      GFQBK
+?COMMENTS
+?COBLEVEL    03,02
+   RECORD   DB-GFQBK.
+   FILE IS "GFQBK" KEY-SEQUENCED.
+*   *****************************************************************************
+*   *       GFQBK  (送信電文折返し振分先設定ファイル)                           *
+*   *****************************************************************************
+
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     SITE-ID                                   PIC X(01).
+     05     NW-ID                                     PIC X(01).
+     05     GRP-ID                                    PIC X(05).
+     05     MTI-ID                                    PIC X(04).
+    03     RECV-QFILE-INFO.
+     05     SRV-CLS-ID.
+      07     SRV-CLS-NAME                             PIC X(08).
+      07     SRV-CLS-NUM                              PIC X(04).
+    03     FUTURE-USE                                 PIC X(27).
+
+   KEY  IS  DB-GFQBK.PRI-KEY.
+
+    END
+
+
+
+?PAGE         "外部NW用キューファイル"
+?FUP          GQNWQFUP!
+?SECTION      GQNWQ
+?COMMENTS
+?COBLEVEL    03,02
+
+  DEF QUEUE-DATA.
+     05 DENBUN_LEN                                  PIC X(04).
+     05 MTI_START_LCT                               PIC 9(04).
+     05 DENBUN                                      PIC X(9999).
+    END
+
+   RECORD   DB-GQNWQ.
+   FILE IS "GQNWQ" KEY-SEQUENCED AUDIT BLOCK 32768.
+*   *******************************************************************
+*   *       GQNWQ  (外部NW用キューファイル)                           *
+*   *******************************************************************
+
+
+?NOCLISTOUT
+    03     PRI-KEY.
+     05     KEY-TIME-STAMP                            PIC 9(08).
+    03     CNTRL-INFO.
+     05     SHORI-KUBUN                               PIC X(02).
+     05     ERR-CODE                                  PIC X(07).
+     05     ACC-NODE-KUBUN                            PIC X(01).
+     05     ISS-NODE-KUBUN                            PIC X(01).
+     05     RE-RGST-NUM                               PIC X(02).
+     05     FUTURE-USE                                PIC X(27).
+    03     DENBUN-SEND-RECV-INFO.
+     05     DENBUN-RECV-TIME                          PIC X(20).
+     05     RECV-KYOKU-STS                            PIC X(01).
+     05     NW-KUBUN                                  PIC X(02).
+     05     MTI-ID                                    PIC X(04).
+     05     SEND-DENBUN-SHUBETU                       PIC X(01).
+     05     DENBUN-LOG-KEY.
+      07     TRAN-ID.
+       09     GFP-LCN-ID.
+        11     GFP-LCN-SITE                           PIC X(01).
+        11     GFP-LCN-NW                             PIC X(01).
+        11     GFP-LCN-FUTURE-USE                     PIC X(01).
+        11     GFP-LCN-Y                              PIC X(01).
+        11     GFP-LCN-MDH                            PIC X(03).
+        11     GFP-LCN-MMSS                           PIC X(04).
+        11     GFP-LCN-SERI-NUM                       PIC X(04).
+       09     DENBUN-KEITAI                           PIC X(01).
+      07     DENBUN-SHUBETU                           PIC X(01).
+      07     RE-SEND-NUM                              PIC X(03).
+     05     DENBUN-FMT-KUBUN                          PIC X(01).
+     05     TUSHIN-LOG-SAVE-FILENAME                  PIC X(36).
+     05     TUSHIN-LOG-KEY.
+      07     PART-ID                                  PIC X(02).
+      07     TIME-STAMP                               PIC X(20).
+      07     TUSHIN-UNIQUE-INFO                       PIC X(16).
+     05     FUTURE-USE                                PIC X(37).
+    03     TUSHIN-CNTRL-INFO.
+     05     IF-ID                                     PIC X(20).
+     05     STATION-ID                                PIC X(11).
+     05     LINE-INFO.
+      07     RECV-CONNECT-ID.
+       09     SITE-ID                                 PIC X(01).
+       09     NW-ID                                   PIC X(01).
+       09     GRP-ID                                  PIC X(05).
+       09     IF-ID                                   PIC X(05).
+       09     STATION-ID                              PIC X(06).
+       09     CONNECT-ID                              PIC X(06).
+      07     RECV-CONNECT-INFO.
+       09     IP-ADRESS-SRC                           PIC X(15).
+       09     PORT-NUM-SRC                            PIC X(05).
+       09     IP-ADRESS-DST                           PIC X(15).
+       09     PORT-NUM-DST                            PIC X(05).
+      07     DENBUN-RECV-TIME-STAMP.
+       09     TIME-STAMP                              PIC X(20).
+       09     TUSHIN-UNIQUE-INFO                      PIC X(16).
+     05     FUTURE-USE                                PIC X(54).
+    03     DENBUN-AREA                              TYPE QUEUE-DATA.
+
+   KEY  IS  DB-GQNWQ.PRI-KEY.
+
+    END
+
+

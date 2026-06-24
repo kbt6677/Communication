@@ -1,0 +1,83 @@
+/**
+ * @brief GFPCSA70.h 
+ *
+ * @date 2025/03/06 新規作成 by HAS
+ *
+*/
+
+/* USER HEADER     */
+#include "NWM_STE.h"                           /* NW個別(開局・閉局・エコー個別処理) */
+#include "NWM_CTU.h"
+
+#ifndef _GFPCSA70_H_
+#define _GFPCSA70_H_
+
+/* ------------------------------------------------------------------------------------------ */
+/* Define 定義                                                                                */
+/* ------------------------------------------------------------------------------------------ */
+#define DEF_PROC_CODE_000000                  "000000"    /* プロセッシングコード             */
+
+#define DEF_COM_SDT_arg1_gmt                        1     /* 標準時                           */
+#define DEF_COM_SDT_arg1_jpn                        2     /* 日本時間                         */
+#define DEF_COM_SDT_arg1_chn                        3     /* 中国時間                         */
+#define DEF_COM_SDT_jpn_time              32400000000     /* 9時間（マイクロ秒)               */
+#define DEF_COM_SDT_chn_time              28800000000     /* 8時間（マイクロ秒)               */
+
+//#define DEF_NERR_STS_NOMAL                  "0000000"     /* 正常                                       */
+//#define DEF_NERR_HSMK_STS_ERR_OPN           "SCDJ002"     /* 被仕向開局処理中の局状態チェックエラー */
+//#define DEF_NERR_HSMK_STS_ERR_CLS           "SCDJ006"     /* 被仕向閉局処理中の局状態チェックエラー */
+//#define DEF_NERR_HSMK_STS_ERR_ECH           "SCDJ022"     /* 被仕向エコーテスト局状態チェックエラー */
+
+#define DEF_ACT_NORMAL                          "800"     /* 正常                             */
+#define DEF_ACT_STS_ERR                         "910"     /* 局状態チェックエラー             */
+
+#define DEF_RSP_KYOKA                             'A'     /* 許可応答                         */
+//#define DEF_RSP_NO_OPTION                         '0'     /* オプション無し                   */
+//#define DEF_RSP_FORCE_EXECUTION                   '1'     /* 強制実行                         */
+//#define DEF_RSP_STAT_UPDATE                       '2'     /* 状態更新                         */
+
+
+#define DEF_REQ_TYPE_SRSP                        "20"     /* 仕向応答                         */
+#define DEF_REQ_TYPE_SRSP_TOUT                   "30"     /* 仕向応答Timeout                  */
+#define DEF_REQ_TYPE_SREQ_SND_ERR                "40"     /* 仕向要求送信不可                 */
+
+#define DEF_CHK_ERR_CTR_TYPE               "Ctrl-Type"
+#define DEF_CHK_ERR_CTRLHD_TYPE       "Ctrl-Head-Type"
+#define DEF_CHK_ERR_TOTAL_LEN           "Total-Legnth"
+#define DEF_CHK_ERR_DST_CENT_ID        "Dst-Center-ID"
+#define DEF_CHK_ERR_SRC_CENT_ID        "Src-Center-ID"
+#define DEF_CHK_ERR_CTL_MERCH_CD      "Ctl-Merch-Code"
+#define DEF_CHK_ERR_SMK_KUBN           "Shimuke-Kubun"
+#define DEF_CHK_ERR_SEND_TIME              "Send-time"
+#define DEF_CHK_ERR_MODE_FLG               "Mode-Flag"
+#define DEF_CHK_ERR_HD_TYPE                "Head-Type"
+#define DEF_CHK_ERR_MSG_TYPE            "Message_Type"
+#define DEF_CHK_ERR_CUT_DATE                "Cut_Date"
+#define DEF_CHK_ERR_BODY_LEN             "Body_Length"
+#define DEF_CHK_ERR_CDNT_ID               "Cardnet_Id"
+#define DEF_CHK_ERR_CDNT_SEQ             "Cardnet_Seq"
+#define DEF_CHK_ERR_MTI                          "MTI"
+#define DEF_CHK_ERR_BIT_03                   "BIT03"     /* エラー発生BIT        */
+#define DEF_CHK_ERR_BIT_11                   "BIT11"     /* エラー発生BIT        */
+#define DEF_CHK_ERR_BIT_12                   "BIT12"     /* エラー発生BIT        */
+#define DEF_CHK_ERR_BIT_24                   "BIT24"     /* エラー発生BIT        */
+#define DEF_CHK_ERR_BIT_33                   "BIT33"     /* エラー発生BIT        */
+#define DEF_CHK_ERR_BIT_39                   "BIT39"     /* エラー発生BIT        */
+
+#define DEF_CST_CHK_OK                               0     /* 局状態チェックOK     */
+#define DEF_CST_CHK_NG                               1     /* 局状態チェックNG     */
+#define DEF_CST_CHK_NG_RETRYCHECK                    2     /* NG（開局リトライ判定対象）*/
+
+/* 制御電文 MTI(EBCDIC) */
+char    c_ax_mti_1804_req_ebc[4] = {0xF1 ,0xF8 ,0xF0 ,0xF4};
+char    c_ax_mti_1814_rsp_ebc[4] = {0xF1 ,0xF8 ,0xF1 ,0xF4};
+
+
+/* ------------------------------------------------------------------------------------------ */
+/* 関数のプロトタイプ宣言                                                                     */
+/* ------------------------------------------------------------------------------------------ */
+short  NWM_STE_char2hex  (char *, char *, short );
+short  NWM_bcd_check     (char *, short );
+void   NWM_bcd_to_char   (char *, char *, short );
+#endif
+
