@@ -200,7 +200,43 @@ struct { char key_value[74]; char check_digit[16]; char key_update_time[14]; ...
 
 ---
 
-## 8. 参照ファイル一覧（本リポジトリ内）
+## 8. Pathway構成での裏付け（追加資料 `コンフィグ・オベイ_トレース0/`）
+
+受領したPathway(PATHCOM)構成オベイファイルにより、本EMSログの出力主体が
+ソース `GFPCVX30.c` であることが裏付けられます。
+
+`コンフィグ・オベイ_トレース0/CCA11SKL`（NW=CA, グループG0001）抜粋：
+
+```
+SET   SERVER PARAM  PM-MY-SERVERCLASS-NAME "SCNMSDSI"        [* 電文振分(inbound) *]
+SET   SERVER PARAM  SRV-LOGICAL-ID         "E-C-G0001-SCNMSDSI-0000"
+SET   SERVER PARAM  MSG-MON-NAME           "$E8AMN"
+SET   SERVER PROGRAM $GFPL01.ACOML.GFPCVJ30
+ADD   SERVER SCNMSDSI
+```
+
+- **サーバクラス `SCNMSDSI`（電文振分inbound）の実体プログラムは `GFPCVJ30`** です。
+  `GFPCVJ30` は共通ソース `GFPCVX30.c` を NW=CA(CARDNET) 向けにビルドしたもの
+  （命名規則：共通の `X` がネットワーク識別子 `J(=CA)` に置換）。CA向けには
+  CA個別の `NWM_ENC`（`dev/nw_CA/src/nwlib/GFPCSJ10`）がリンクされます。
+  → EMSログの `GFP , COM NW=CA/ GFPCVX30`（共通ソース名で出力）と整合。
+- `MSG-MON-NAME "$E8AMN"` 等の `$E8A*` 系プロセス名は、EMSログの `$E8AA1` /
+  `$LCAD6` と同一サブシステム系統。
+- 同様の SCNMSDSI 定義は `CCA12SKL`（G0001冗長）, `CCA21SKL`/`CCA22SKL`（G0002）
+  にも存在し、東/西・グループ単位で多重化されています。
+
+つまり、**「NW=CA の電文振分inbound（SCNMSDSI=GFPCVJ30）が、受信電文の復号・認証で
+共通モジュール NWM_ENC を呼び、KMACチェックディジット不一致(9)で ECCE007 を出力した」**
+という第1〜7章の結論が、実運用構成からも確認できます。
+
+> 補足：本構成一式は PATHCOM の OBEY コマンドファイル（`SKL`=サーバ定義,
+> `BEG`/`END`/`STA`=起動・停止・状態, `*cmd`=東西別コマンド 等）で、計216ファイル。
+> ATALLA(HSM)や鍵管理ファイル(GCKEY)の所在はGFP個別パラメータ／別サーバ経由
+> (PATHSEND)で解決されるため、本SCNMSDSIサーバ定義内には直接の鍵ファイルASSIGNはありません。
+
+---
+
+## 9. 参照ファイル一覧（本リポジトリ内）
 
 | 役割 | パス |
 |---|---|
@@ -211,3 +247,4 @@ struct { char key_value[74]; char check_digit[16]; char key_update_time[14]; ...
 | サーバクラス定義(SCNMSDSI) | `40.ソース/dev/common/include/common.h` |
 | EMSイベント定義(共通モジュールエラー) | `40.ソース/dev/common/include/ems.h` |
 | 鍵管理ファイル構造(GCKEY) | `40.ソース/dev/common/include/file.h` |
+| Pathway構成(SCNMSDSI=GFPCVJ30 定義, NW=CA) | `コンフィグ・オベイ_トレース0/CCA11SKL` 他 |
